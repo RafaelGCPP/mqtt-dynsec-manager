@@ -1,19 +1,40 @@
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using mqtt_dynsec_manager.Data;
 using mqtt_dynsec_manager.Environment;
 using mqtt_dynsec_manager.Models;
+using MQTTnet;
+using MQTTnet.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// Binding configurations
 
-
-OracleDBConfig oraDbConfig = new OracleDBConfig();
+OracleDBConfig oraDbConfig = new();
+MQTTConfig mqttConfig = new();
 builder.Configuration.Bind("ORADB", oraDbConfig);
+builder.Configuration.Bind("MQTT", mqttConfig);
+
+// Preparing MQTT options
+MqttClientOptionsBuilder mqttClientOptionsBuilder = new();
+if (mqttConfig.WebSockets)
+{
+    mqttClientOptionsBuilder = mqttClientOptionsBuilder.WithWebSocketServer(mqttConfig.Host)
+        .WithCredentials(mqttConfig.UserName, mqttConfig.Password);
+}
+else
+{
+    mqttClientOptionsBuilder = mqttClientOptionsBuilder.WithTcpServer(mqttConfig.Host)
+        .WithCredentials(mqttConfig.UserName, mqttConfig.Password); ;
+}
+
+if (mqttConfig.Tls) mqttClientOptionsBuilder = mqttClientOptionsBuilder.WithTls();
+var mqttClientOptions = mqttClientOptionsBuilder.Build();
+
+builder.Services.AddSingleton<MqttClientOptions>(mqttClientOptions);
+builder.Services.AddScoped<MqttFactory, MqttFactory>();
+
+// Add services to the container.
 
 builder.Services.AddSingleton<OracleDBConfig>(oraDbConfig);
 

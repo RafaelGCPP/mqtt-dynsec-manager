@@ -17,7 +17,13 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
         "ORADB__UserName": "MQTTTEST",
         "ORADB__Password": "MQ11t35t9999",
-        "ORADB__DataSource": "@index_high"
+        "ORADB__DataSource": "@index_high",
+        "MQTT__Host": "aqua.pu1owl.org",
+        "MQTT__Port": "8883",
+        "MQTT__Tls": "true",
+        "MQTT__WebSockets": "false",
+        "MQTT__UserName": "admin",
+        "MQTT__Password": "wsvs7727"
       }
     },
     "IIS Express": {
