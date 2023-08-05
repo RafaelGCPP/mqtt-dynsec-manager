@@ -14,7 +14,10 @@
       "applicationUrl": "https://localhost:7009;http://localhost:5022",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "ORADB__UserName": "MQTTTEST",
+        "ORADB__Password": "MQ11t35t9999",
+        "ORADB__DataSource": "@index_high"
       }
     },
     "IIS Express": {
