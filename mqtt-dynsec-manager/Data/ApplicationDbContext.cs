@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+﻿using Duende.IdentityServer.EntityFramework.Entities;
+using Duende.IdentityServer.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Duende.IdentityServer.EntityFramework.Options;
 using mqtt_dynsec_manager.Models;
-using Duende.IdentityServer.Models;
-using Duende.IdentityServer.EntityFramework.Entities;
 
 namespace mqtt_dynsec_manager.Data;
 

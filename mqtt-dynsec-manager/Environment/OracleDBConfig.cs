@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace mqtt_dynsec_manager.Environment
+﻿namespace mqtt_dynsec_manager.Environment
 {
     public class OracleDBConfig
     {

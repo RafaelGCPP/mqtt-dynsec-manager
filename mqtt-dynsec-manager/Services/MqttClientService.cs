@@ -1,11 +1,6 @@
 ﻿using mqtt_dynsec_manager.DynSecModel;
-using mqtt_dynsec_manager.Helpers;
 using MQTTnet;
 using MQTTnet.Client;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Unicode;
 
 namespace mqtt_dynsec_manager.Services
 {
@@ -21,11 +16,16 @@ namespace mqtt_dynsec_manager.Services
 
         public void Teste()
         {
+            var cmds = new CommandsList(new List<AbstractCommand>        {
+                        new ListClientsCommand(true),
+                        new ListGroupsCommand(true),
+                        new ListRolesCommand(true,-1,0)        });
 
-            TesteAsync().Wait();
+            Console.Out.WriteLine(cmds.AsJSON());
+            TesteAsync(cmds).Wait();
         }
 
-        public async Task TesteAsync()
+        public async Task TesteAsync(CommandsList commands)
         {
             MqttFactory factory = new();
             using (IMqttClient client = factory.CreateMqttClient())
@@ -33,37 +33,15 @@ namespace mqtt_dynsec_manager.Services
 
                 await client.ConnectAsync(options);
 
-                var cmds = new CommandsList(
-                    new List<AbstractCommand>
-                        {
-                        new ListClientsCommand(true),
-                        new ListGroupsCommand(true),
-                        new ListRolesCommand(true,-1,0),
-                        }
-                );
-
-
-                var jsonoptions = new JsonSerializerOptions
-                {
-                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin),
-                };
-                string json = JsonSerializer.Serialize(cmds, jsonoptions);
-
-                json.DumpToConsole();
-
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic(topic)
                     .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce)
-                    .WithPayload(json)
+                    .WithPayload(commands.AsJSON())
                     .Build();
-
-                message.DumpToConsole();
 
                 await client.PublishAsync(message);
 
             }
-
-
 
         }
 
@@ -82,12 +60,6 @@ namespace mqtt_dynsec_manager.Services
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~MqttClientService()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
 
         public void Dispose()
         {
