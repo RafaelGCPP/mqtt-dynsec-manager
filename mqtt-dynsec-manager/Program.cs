@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using mqtt_dynsec_manager.Data;
 using mqtt_dynsec_manager.Environment;
 using mqtt_dynsec_manager.Models;
+using mqtt_dynsec_manager.Services;
 using MQTTnet;
 using MQTTnet.Client;
 
@@ -29,17 +30,27 @@ else
 }
 
 if (mqttConfig.Tls) mqttClientOptionsBuilder = mqttClientOptionsBuilder.WithTls();
-var mqttClientOptions = mqttClientOptionsBuilder.Build();
+var mqttClientOptions = mqttClientOptionsBuilder
+    .WithClientId("mqtt-dynsec-manager")
+    .WithCleanSession(true)
+    .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
+    .Build();
 
 builder.Services.AddSingleton<MqttClientOptions>(mqttClientOptions);
 builder.Services.AddScoped<MqttFactory, MqttFactory>();
+
+MqttClientService teste = new(mqttClientOptions);
+
+teste.Teste();
+
+return;
 
 // Add services to the container.
 
 builder.Services.AddSingleton<OracleDBConfig>(oraDbConfig);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseOracle(oraDbConfig.ConnectionString) );
+    options.UseOracle(oraDbConfig.ConnectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
