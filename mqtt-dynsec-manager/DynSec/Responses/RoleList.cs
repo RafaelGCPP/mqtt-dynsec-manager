@@ -8,7 +8,7 @@ namespace mqtt_dynsec_manager.DynSec.Responses
         public class ResponseData
         {
             public int? TotalCount { get; set; }
-            public Role[]? Roles { get; set; }
+            public RoleACL[]? Roles { get; set; }
 
         };
         public ResponseData? Data { get; set; }
