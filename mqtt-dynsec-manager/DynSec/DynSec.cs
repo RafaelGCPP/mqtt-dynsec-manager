@@ -41,16 +41,20 @@ namespace mqtt_dynsec_manager.DynSec
 
         public ResponseList Teste()
         {
-            var setACLcmd = new SetDefaultACLAccess();
-            setACLcmd.ACLs.Add(new DefaultACL { ACLType= "subscribe", Allow=false });
+            //var setACLcmd = new SetDefaultACLAccess();
+            //setACLcmd.ACLs.Add(new DefaultACL { ACLType= "subscribe", Allow=false });
+
+            //var cmds = new CommandsList(new List<AbstractCommand>        {
+            //      setACLcmd,
+            //      new Commands.GetClient("admin"),
+            //      new Commands.GetDefaultACLAccess(),
+            //      new Commands.ListClients(true),
+            //      new Commands.ListGroups(true),
+            //      new Commands.ListRoles(true,-1,0)        });
 
             var cmds = new CommandsList(new List<AbstractCommand>        {
-                  setACLcmd,
-                  new Commands.GetClient("admin"),
-                  new Commands.GetDefaultACLAccess(),
-                  new Commands.ListClients(true),
-                  new Commands.ListGroups(true),
-                  new Commands.ListRoles(true,-1,0)        });
+                new GetGroup("teste"),
+            });
 
             var result = Task.Run(() => ExecuteAsync(TimeSpan.FromSeconds(10), cmds)).Result;
 

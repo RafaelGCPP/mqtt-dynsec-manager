@@ -3,6 +3,6 @@
 
     public class ClientNameClass
     {
-        public string? ClientName { get; set; }
+        public string? UserName { get; set; }
     }
 }
