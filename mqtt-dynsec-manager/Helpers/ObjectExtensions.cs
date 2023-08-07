@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using mqtt_dynsec_manager.DynSec.Responses.Helpers;
+using System.Text.Json;
 
 namespace mqtt_dynsec_manager.Helpers;
 
@@ -9,10 +10,13 @@ internal static class ObjectExtensions
         var output = "NULL";
         if (@object != null)
         {
-            output = JsonSerializer.Serialize(@object, new JsonSerializerOptions
+            var jsonoptions = new JsonSerializerOptions
             {
                 WriteIndented = true
-            });
+            };
+            //jsonoptions.Converters.Add(new ResponseConverter());
+
+            output = JsonSerializer.Serialize(@object, jsonoptions);
         }
 
         Console.WriteLine($"[{@object?.GetType().Name}]:\r\n{output}");

@@ -1,11 +1,56 @@
+using GreenDonut;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using mqtt_dynsec_manager.Data;
+using mqtt_dynsec_manager.DynSec;
+using mqtt_dynsec_manager.DynSec.Interfaces;
+using mqtt_dynsec_manager.DynSec.Responses.Helpers;
+using mqtt_dynsec_manager.DynSec.Responses;
 using mqtt_dynsec_manager.Environment;
 using mqtt_dynsec_manager.Models;
-using mqtt_dynsec_manager.Services;
 using MQTTnet;
 using MQTTnet.Client;
+using System.Text.Json;
+using HotChocolate.Execution;
+using System.Text.Encodings.Web;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
+
+//var result = """
+//    {
+//      "command": "listClients",
+//      "Data": {
+//        "totalCount": 1,
+//        "clients": [
+//          {
+//            "username": "admin",
+//            "textname": "Dynsec admin user",
+//            "roles": [
+//              {
+//                "rolename": "admin"
+//              }
+//            ],
+//            "groups": []
+//          }
+//        ]
+//      }
+//    }
+//    """;
+
+
+//var jsonoptions = new JsonSerializerOptions
+//{
+//    Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin),
+//    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+//    PropertyNameCaseInsensitive = true
+//};
+////jsonoptions.Converters.Add(new ResponseConverter());
+
+//var data = JsonSerializer.Deserialize<mqtt_dynsec_manager.DynSec.Responses.ListClients>(result, jsonoptions);
+
+
+
+//return;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,18 +81,22 @@ var mqttClientOptions = mqttClientOptionsBuilder
     .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
     .Build();
 
-builder.Services.AddSingleton<MqttClientOptions>(mqttClientOptions);
-builder.Services.AddScoped<MqttFactory, MqttFactory>();
+builder.Services.AddSingleton(mqttClientOptions);
 
-MqttClientService teste = new(mqttClientOptions);
+builder.Services.AddScoped<IMqttClient>(sp =>
+{
+    MqttClientOptions options = sp.GetRequiredService<MqttClientOptions>();
+    MqttFactory mqttFactory = new();
+    var client = mqttFactory.CreateMqttClient();
+    client.ConnectAsync(options).Wait();
+    return client;
+});
 
-teste.Teste();
-
-return;
+builder.Services.AddScoped<IDynSec, DynSec>();
 
 // Add services to the container.
 
-builder.Services.AddSingleton<OracleDBConfig>(oraDbConfig);
+builder.Services.AddSingleton(oraDbConfig);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseOracle(oraDbConfig.ConnectionString));
@@ -99,6 +148,7 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.MapFallbackToFile("index.html");
+
 
 
 

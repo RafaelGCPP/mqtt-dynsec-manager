@@ -1,0 +1,5 @@
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net6.0\jsonDeserialize.csproj.AssemblyReference.cache
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net6.0\jsonDeserialize.GeneratedMSBuildEditorConfig.editorconfig
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net6.0\jsonDeserialize.AssemblyInfoInputs.cache
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net6.0\jsonDeserialize.AssemblyInfo.cs
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net6.0\jsonDeserialize.csproj.CoreCompileInputs.cache

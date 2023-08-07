@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using mqtt_dynsec_manager.DynSec.Interfaces;
+using mqtt_dynsec_manager.DynSec.Responses.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,11 +10,16 @@ namespace mqtt_dynsec_manager.Controllers
     [ApiController]
     public class MQTTdynsecController : ControllerBase
     {
+        private readonly IDynSec dynSec;
+
+        public MQTTdynsecController(IDynSec _dynSec) { dynSec = _dynSec; }
+
         // GET: api/<MQTTdynsecController>
         [HttpGet("clients")]
-        public IEnumerable<string> Get()
+        public ResponseList Get()
         {
-            return new string[] { "value1", "value2" };
+            
+            return  dynSec.Teste(); 
         }
 
         // GET api/<MQTTdynsecController>/5

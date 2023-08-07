@@ -1,0 +1,15 @@
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\bin\Debug\net7.0\jsonDeserialize.exe
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\bin\Debug\net7.0\jsonDeserialize.deps.json
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\bin\Debug\net7.0\jsonDeserialize.runtimeconfig.json
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\bin\Debug\net7.0\jsonDeserialize.dll
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\bin\Debug\net7.0\jsonDeserialize.pdb
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\jsonDeserialize.csproj.AssemblyReference.cache
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\jsonDeserialize.GeneratedMSBuildEditorConfig.editorconfig
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\jsonDeserialize.AssemblyInfoInputs.cache
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\jsonDeserialize.AssemblyInfo.cs
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\jsonDeserialize.csproj.CoreCompileInputs.cache
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\jsonDeserialize.dll
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\refint\jsonDeserialize.dll
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\jsonDeserialize.pdb
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\jsonDeserialize.genruntimeconfig.cache
+E:\work\dotnet\mqtt-dynsec-manager\jsonDeserialize\jsonDeserialize\obj\Debug\net7.0\ref\jsonDeserialize.dll
