@@ -7,14 +7,14 @@ namespace mqtt_dynsec_manager.DynSec.Commands.Abstract
 
     [JsonDerivedType(typeof(SetDefaultACLAccess))]
     [JsonDerivedType(typeof(GetDefaultACLAccess))]
-    //CreateClient
+    [JsonDerivedType(typeof(CreateClient))]
     //DeleteClient
     //EnableClient
     //DisableClient
     [JsonDerivedType(typeof(GetClient))]
     [JsonDerivedType(typeof(ListClients))]
-    //ModifyClient
-    //SetClientID
+    [JsonDerivedType(typeof(ModifyClient))]
+    [JsonDerivedType(typeof(SetClientId))]
     //SetClientPassword
     //AddClientRole
     //RemoveClientRole
@@ -39,8 +39,8 @@ namespace mqtt_dynsec_manager.DynSec.Commands.Abstract
     public abstract class AbstractCommand
     {
         public AbstractCommand(string command) { _command = command; }
-        private readonly string _command = "";
-        public string Command { get { return _command; } }
+        protected string _command = "";
+        public string Command { get { return _command; } protected set { _command = value; } }
 
 
     }
