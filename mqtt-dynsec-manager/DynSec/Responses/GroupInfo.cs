@@ -3,7 +3,7 @@ using mqtt_dynsec_manager.DynSec.Responses.Abstract;
 
 namespace mqtt_dynsec_manager.DynSec.Responses
 {
-    public class GroupInfo:AbstractResponse
+    public class GroupInfo : AbstractResponse
     {
         public class ResponseData
         {

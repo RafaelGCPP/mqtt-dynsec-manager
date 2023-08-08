@@ -1,24 +1,20 @@
-﻿using mqtt_dynsec_manager.DynSec.Interfaces;
-using mqtt_dynsec_manager.DynSec;
+﻿using mqtt_dynsec_manager.DynSec.Commands;
+using mqtt_dynsec_manager.DynSec.Commands.Abstract;
+using mqtt_dynsec_manager.DynSec.Commands.Helpers;
+using mqtt_dynsec_manager.DynSec.Interfaces;
+using mqtt_dynsec_manager.DynSec.Responses.Helpers;
+using mqtt_dynsec_manager.Helpers;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Exceptions;
 using MQTTnet.Internal;
 using MQTTnet.Protocol;
-using MQTTnet.Server;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using static System.Net.Mime.MediaTypeNames;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using mqtt_dynsec_manager.Helpers;
-using mqtt_dynsec_manager.DynSec.Commands;
-using mqtt_dynsec_manager.DynSec.Commands.Abstract;
-using mqtt_dynsec_manager.DynSec.Responses.Helpers;
-using mqtt_dynsec_manager.DynSec.Commands.Helpers;
-using mqtt_dynsec_manager.DynSec.Model;
 
 namespace mqtt_dynsec_manager.DynSec
 {

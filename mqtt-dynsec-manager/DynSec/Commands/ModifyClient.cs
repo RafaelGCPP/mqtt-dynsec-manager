@@ -46,23 +46,3 @@ namespace mqtt_dynsec_manager.DynSec.Commands
 
     }
 }
-/*
-{
-	"commands":[
-		{
-			"command": "modifyClient",
-			"username": "username to modify"
-			"clientid": "new clientid, or empty string to clear", # Optional
-			"password": "new password", # Optional
-			"textname": "", # Optional
-			"textdescription": "", # Optional
-			"roles": [
-				{ "rolename": "role", "priority": 1 }
-			], # Optional
-			"groups": [
-				{ "groupname": "group", "priority": 1 }
-			], # Optional
-		}
-	]
-}
-*/

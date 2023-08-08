@@ -1,9 +1,6 @@
 ﻿using mqtt_dynsec_manager.DynSec.Responses.Abstract;
-using System;
-using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.Unicode;
 
 namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 {

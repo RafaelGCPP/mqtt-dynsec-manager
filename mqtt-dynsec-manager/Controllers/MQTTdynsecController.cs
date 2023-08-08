@@ -18,8 +18,8 @@ namespace mqtt_dynsec_manager.Controllers
         [HttpGet("clients")]
         public ResponseList Get()
         {
-            
-            return  dynSec.Teste(); 
+
+            return dynSec.Teste();
         }
 
         // GET api/<MQTTdynsecController>/5

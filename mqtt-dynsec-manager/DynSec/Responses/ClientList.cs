@@ -1,7 +1,5 @@
 ﻿using mqtt_dynsec_manager.DynSec.Model;
 using mqtt_dynsec_manager.DynSec.Responses.Abstract;
-using System.Data;
-using static mqtt_dynsec_manager.DynSec.Responses.ClientList;
 
 namespace mqtt_dynsec_manager.DynSec.Responses
 {

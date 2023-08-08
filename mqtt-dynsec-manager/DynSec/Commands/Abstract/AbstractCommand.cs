@@ -1,5 +1,4 @@
-﻿using mqtt_dynsec_manager.DynSec.Commands.Abstract;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace mqtt_dynsec_manager.DynSec.Commands.Abstract
 {
@@ -39,8 +38,8 @@ namespace mqtt_dynsec_manager.DynSec.Commands.Abstract
     public abstract class AbstractCommand
     {
         public AbstractCommand(string command) { _command = command; }
-        protected string _command = "";
-        public string Command { get { return _command; } protected set { _command = value; } }
+        private readonly string _command = "";
+        public string Command { get { return _command; } }
 
 
     }

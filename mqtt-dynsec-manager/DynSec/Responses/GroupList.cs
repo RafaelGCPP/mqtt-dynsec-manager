@@ -2,7 +2,7 @@
 
 namespace mqtt_dynsec_manager.DynSec.Responses
 {
-    public class GroupList:AbstractResponse
+    public class GroupList : AbstractResponse
     {
         public object? Data { get; set; }
     }

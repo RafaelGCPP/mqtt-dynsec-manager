@@ -1,11 +1,10 @@
 ﻿using mqtt_dynsec_manager.DynSec.Commands.Abstract;
 using mqtt_dynsec_manager.DynSec.Commands.Helpers;
 using mqtt_dynsec_manager.DynSec.Model;
-using System.Data;
 
 namespace mqtt_dynsec_manager.DynSec.Commands
 {
-    public class CreateClient :  AbstractCommand
+    public class CreateClient : AbstractCommand
     {
         public CreateClient(string _username, string _password) : base("createClient")
         {
