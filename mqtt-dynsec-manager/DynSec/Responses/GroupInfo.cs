@@ -5,7 +5,7 @@ namespace mqtt_dynsec_manager.DynSec.Responses
 {
     public class GroupInfo : AbstractResponse
     {
-        public class ResponseData
+        public class ResponseData : AbstractResponseData
         {
             public Group? Group { get; set; }
         }

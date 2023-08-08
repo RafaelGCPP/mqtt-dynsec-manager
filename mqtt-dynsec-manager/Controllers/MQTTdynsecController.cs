@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using mqtt_dynsec_manager.DynSec.Commands.Abstract;
+using mqtt_dynsec_manager.DynSec.Commands.Helpers;
+using mqtt_dynsec_manager.DynSec.Commands;
 using mqtt_dynsec_manager.DynSec.Interfaces;
 using mqtt_dynsec_manager.DynSec.Responses.Helpers;
 
@@ -14,37 +17,28 @@ namespace mqtt_dynsec_manager.Controllers
 
         public MQTTdynsecController(IDynSec _dynSec) { dynSec = _dynSec; }
 
-        // GET: api/<MQTTdynsecController>
+        // GET: api/<MQTTdynsecController>/clients
         [HttpGet("clients")]
-        public ResponseList Get()
+        public async Task<ResponseList> GetGlients(bool? verbose)
         {
+            var cmds = new CommandsList(new List<AbstractCommand> {
+                new ListClients(verbose ?? false),
+            });
 
-            return dynSec.Teste();
+            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+
+        }
+        // GET: api/<MQTTdynsecController>/roles
+        [HttpGet("roles")]
+        public async Task<ResponseList> GetRoles(bool? verbose)
+        {
+            var cmds = new CommandsList(new List<AbstractCommand> {
+                new ListRoles(verbose ?? false),
+            });
+
+            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+
         }
 
-        // GET api/<MQTTdynsecController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<MQTTdynsecController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<MQTTdynsecController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<MQTTdynsecController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

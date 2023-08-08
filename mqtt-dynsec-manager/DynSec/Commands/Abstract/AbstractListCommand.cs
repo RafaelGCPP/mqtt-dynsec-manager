@@ -12,12 +12,7 @@ namespace mqtt_dynsec_manager.DynSec.Commands.Abstract
 
         }
 
-        public AbstractListCommand(string command, bool verbose) : base(command)
-        {
-            _verbose = verbose;
-        }
-
-        public AbstractListCommand(string command, bool verbose, int count, int offset) : base(command)
+        public AbstractListCommand(string command, bool? verbose, int? count, int? offset) : base(command)
         {
             _verbose = verbose;
             _count = count;

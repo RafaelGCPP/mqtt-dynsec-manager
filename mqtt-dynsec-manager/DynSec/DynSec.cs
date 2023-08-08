@@ -1,4 +1,5 @@
-﻿using mqtt_dynsec_manager.DynSec.Commands;
+﻿using GreenDonut;
+using mqtt_dynsec_manager.DynSec.Commands;
 using mqtt_dynsec_manager.DynSec.Commands.Abstract;
 using mqtt_dynsec_manager.DynSec.Commands.Helpers;
 using mqtt_dynsec_manager.DynSec.Interfaces;
@@ -33,8 +34,8 @@ namespace mqtt_dynsec_manager.DynSec
             client.ApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
 
         }
-        readonly ConcurrentDictionary<string, AsyncTaskCompletionSource<string>> _waitingCalls = new();
-
+        readonly ConcurrentDictionary<string, AsyncTaskCompletionSource<ResponseList>> _waitingCalls = new();
+       
         public ResponseList Teste()
         {
 
@@ -46,20 +47,14 @@ namespace mqtt_dynsec_manager.DynSec
             var result = Task.Run(() => ExecuteAsync(TimeSpan.FromSeconds(10), cmds)).Result;
 
 
-            var jsonoptions = new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin),
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                PropertyNameCaseInsensitive = true,
-            };
 
-            var data = JsonSerializer.Deserialize<ResponseList>(result, jsonoptions);
-            data.DumpToConsole();
+            result.DumpToConsole();
 
-            return data ?? new();
+            return result ;
         }
 
-        public async Task<string> ExecuteAsync(TimeSpan timeout, CommandsList commands)
+        
+        public async Task<ResponseList> ExecuteAsync(TimeSpan timeout, CommandsList commands)
         {
             using (var timeoutToken = new CancellationTokenSource(timeout))
             {
@@ -80,11 +75,11 @@ namespace mqtt_dynsec_manager.DynSec
         }
 
 
-        public async Task<string> ExecuteAsync(CommandsList commands, CancellationToken cancellationToken = default)
+        public async Task<ResponseList> ExecuteAsync(CommandsList commands, CancellationToken cancellationToken = default)
         {
             try
             {
-                var awaitable = new AsyncTaskCompletionSource<string>();
+                var awaitable = new AsyncTaskCompletionSource<ResponseList>();
 
                 if (!_waitingCalls.TryAdd(responseTopic, awaitable))
                 {
@@ -129,9 +124,20 @@ namespace mqtt_dynsec_manager.DynSec
             }
 
             var payloadBuffer = eventArgs.ApplicationMessage.PayloadSegment.ToArray();
-            string payload = Encoding.UTF8.GetString(payloadBuffer);
+            var payloadStr= Encoding.UTF8.GetString(payloadBuffer);
 
-            awaitable.TrySetResult(payload);
+            var jsonoptions = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin),
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                PropertyNameCaseInsensitive = true,
+            };
+
+            var data = JsonSerializer.Deserialize<ResponseList>(payloadStr, jsonoptions) ?? new();
+
+            
+
+            awaitable.TrySetResult(data);
 
             // Set this message to handled to that other code can avoid execution etc.
             eventArgs.IsHandled = true;

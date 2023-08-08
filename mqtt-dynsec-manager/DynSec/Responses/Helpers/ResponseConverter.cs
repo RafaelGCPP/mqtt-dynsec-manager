@@ -9,11 +9,6 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
         public override bool CanConvert(Type typeToConvert) =>
             typeof(AbstractResponse).IsAssignableFrom(typeToConvert);
 
-
-
-
-
-
         public override AbstractResponse Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
 

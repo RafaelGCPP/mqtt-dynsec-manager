@@ -3,6 +3,9 @@
     public class RoleACL
     {
         public string? RoleName { get; set; }
+        public string? TextName { get; set; }
+        public string? TextDescription { get; set; }
+
         public ACLDefinition[]? ACLs { get; set; }
 
     }

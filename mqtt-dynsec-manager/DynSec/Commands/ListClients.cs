@@ -5,8 +5,7 @@ namespace mqtt_dynsec_manager.DynSec.Commands
     public sealed class ListClients : AbstractListCommand
     {
         public ListClients() : base("listClients") { }
-        public ListClients(bool verbose) : base("listClients", verbose) { }
-        public ListClients(bool verbose, int count, int offset)
+        public ListClients(bool verbose = false, int? count = null, int? offset = null)
             : base("listClients", verbose, count, offset) { }
     }
 }
