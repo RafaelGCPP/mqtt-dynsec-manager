@@ -1,5 +1,9 @@
-﻿namespace mqtt_dynsec_manager.DynSec.Model
+﻿using mqtt_dynsec_manager.DynSec.Responses.Helpers;
+using System.Text.Json.Serialization;
+
+namespace mqtt_dynsec_manager.DynSec.Model
 {
+    [JsonConverter(typeof(RoleACLConverter))]
     public class RoleACL
     {
         public string? RoleName { get; set; }

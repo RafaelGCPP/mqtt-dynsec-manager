@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using mqtt_dynsec_manager.DynSec.Commands;
 using mqtt_dynsec_manager.DynSec.Commands.Abstract;
 using mqtt_dynsec_manager.DynSec.Commands.Helpers;
-using mqtt_dynsec_manager.DynSec.Commands;
 using mqtt_dynsec_manager.DynSec.Interfaces;
 using mqtt_dynsec_manager.DynSec.Responses.Helpers;
 
@@ -22,7 +22,7 @@ namespace mqtt_dynsec_manager.Controllers
         public async Task<ResponseList> GetGlients(bool? verbose)
         {
             var cmds = new CommandsList(new List<AbstractCommand> {
-                new ListClients(verbose ?? false),
+                new ListClients(verbose ?? true),
             });
 
             return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
@@ -33,12 +33,22 @@ namespace mqtt_dynsec_manager.Controllers
         public async Task<ResponseList> GetRoles(bool? verbose)
         {
             var cmds = new CommandsList(new List<AbstractCommand> {
-                new ListRoles(verbose ?? false),
+                new ListRoles(verbose ?? true),
             });
 
             return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
 
         }
+        // GET: api/<MQTTdynsecController>/groups
+        [HttpGet("groups")]
+        public async Task<ResponseList> GetGroups(bool? verbose)
+        {
+            var cmds = new CommandsList(new List<AbstractCommand> {
+                new ListGroups(verbose ?? true),
+            });
 
+            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+
+        }
     }
 }

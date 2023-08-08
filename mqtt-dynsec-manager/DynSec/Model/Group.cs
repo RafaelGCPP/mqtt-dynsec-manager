@@ -1,10 +1,16 @@
-﻿namespace mqtt_dynsec_manager.DynSec.Model
-{
-    public class ClientGroup
-    {
-        public string? RoleName { get; set; }
-        public int Priority { get; set; } = 1;
+﻿using mqtt_dynsec_manager.DynSec.Responses.Helpers;
+using System.Text.Json.Serialization;
 
+namespace mqtt_dynsec_manager.DynSec.Model
+{
+    [JsonConverter(typeof(GroupConverter))]
+    public class Group
+    {
+        public string? GroupName { get; set; }
+        public string? TextName { get; set; }
+        public string? TextDescription { get; set; }
+        public RoleNameClass[]? Roles { get; set; }
+        public ClientNameClass[]? Clients { get; set; }
     }
     public class GroupPriority
     {

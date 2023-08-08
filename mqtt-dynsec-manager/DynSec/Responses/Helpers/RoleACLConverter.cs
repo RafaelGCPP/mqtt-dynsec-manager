@@ -4,12 +4,11 @@ using System.Text.Json.Serialization;
 
 namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 {
-    public class ClientConverter : JsonConverter<Client>
+    public class RoleACLConverter : JsonConverter<RoleACL>
     {
-        public override Client? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override RoleACL? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-
-            Client client = new();
+            RoleACL roleACL = new();
 
             if (reader.TokenType != JsonTokenType.String &&
                 reader.TokenType != JsonTokenType.StartObject)
@@ -19,10 +18,9 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 
             if (reader.TokenType == JsonTokenType.String)
             {
-                client.UserName = reader.GetString();
-                return client;
+                roleACL.RoleName = reader.GetString();
+                return roleACL;
             }
-
             while (reader.TokenType != JsonTokenType.EndObject)
             {
                 if (!reader.Read() ||
@@ -38,41 +36,35 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 
                 switch (propertyName)
                 {
-                    case "username":
+                    case "rolename":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.String)
                         {
                             throw new JsonException();
                         }
-                        client.UserName = reader.GetString();
+                        roleACL.RoleName = reader.GetString();
                         break;
                     case "textname":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.String)
                         {
                             throw new JsonException();
                         }
-                        client.TextName = reader.GetString();
+                        roleACL.TextName = reader.GetString();
                         break;
                     case "textdescription":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.String)
                         {
                             throw new JsonException();
                         }
-                        client.TextDescription = reader.GetString();
+                        roleACL.TextDescription = reader.GetString();
                         break;
-                    case "roles":
+                    case "acls":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.StartArray)
                         {
                             throw new JsonException();
                         }
-                        client.Roles = JsonSerializer.Deserialize<RoleNameClass[]>(ref reader, options);
+                        roleACL.ACLs = JsonSerializer.Deserialize<ACLDefinition[]>(ref reader, options);
                         break;
-                    case "groups":
-                        if (!reader.Read() || reader.TokenType != JsonTokenType.StartArray)
-                        {
-                            throw new JsonException();
-                        }
-                        client.Groups = JsonSerializer.Deserialize<GroupNameClass[]>(ref reader, options);
-                        break;
+
                     default:
                         throw new JsonException($"Invalid property: {propertyName}");
 
@@ -80,28 +72,23 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 
             }
 
-
-            return client;
+            return roleACL;
         }
 
-        public override void Write(Utf8JsonWriter writer, Client value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, RoleACL value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
 
-            WriteStringProperty(ref writer, "userName", value.UserName, options);
+            WriteStringProperty(ref writer, "roleName", value.RoleName, options);
             WriteStringProperty(ref writer, "textName", value.TextName, options);
             WriteStringProperty(ref writer, "textDescription", value.TextDescription, options);
 
-            if ((value.Roles is not null) || (options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull))
-            {
-                writer.WritePropertyName("roles");
-                JsonSerializer.Serialize(writer, value.Roles, options);
-            }
 
-            if ((value.Groups is not null) || (options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull))
+
+            if ((value.ACLs is not null) || (options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull))
             {
-                writer.WritePropertyName("groups");
-                JsonSerializer.Serialize(writer, value.Groups, options);
+                writer.WritePropertyName("acls");
+                JsonSerializer.Serialize(writer, value.ACLs, options);
             }
 
             writer.WriteEndObject();
@@ -114,6 +101,5 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
             writer.WritePropertyName(propertyName);
             writer.WriteStringValue(value);
         }
-
     }
 }

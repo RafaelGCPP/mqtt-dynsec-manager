@@ -4,10 +4,6 @@ using System.Text.Json.Serialization;
 namespace mqtt_dynsec_manager.DynSec.Model
 {
 
-    public class ClientNameClass
-    {
-        public string? UserName { get; set; }
-    }
     [JsonConverter(typeof(ClientConverter))]
     public class Client
     {
@@ -17,4 +13,17 @@ namespace mqtt_dynsec_manager.DynSec.Model
         public RoleNameClass[]? Roles { get; set; }
         public GroupNameClass[]? Groups { get; set; }
     }
+
+    public class ClientPriority
+    {
+        public string? ClientName { get; set; }
+        public int Priority { get; set; } = 1;
+
+    }
+
+    public class ClientNameClass
+    {
+        public string? UserName { get; set; }
+    }
+
 }

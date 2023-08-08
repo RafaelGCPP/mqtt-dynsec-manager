@@ -1,5 +1,4 @@
-﻿using GreenDonut;
-using mqtt_dynsec_manager.DynSec.Commands;
+﻿using mqtt_dynsec_manager.DynSec.Commands;
 using mqtt_dynsec_manager.DynSec.Commands.Abstract;
 using mqtt_dynsec_manager.DynSec.Commands.Helpers;
 using mqtt_dynsec_manager.DynSec.Interfaces;
@@ -35,7 +34,7 @@ namespace mqtt_dynsec_manager.DynSec
 
         }
         readonly ConcurrentDictionary<string, AsyncTaskCompletionSource<ResponseList>> _waitingCalls = new();
-       
+
         public ResponseList Teste()
         {
 
@@ -50,10 +49,10 @@ namespace mqtt_dynsec_manager.DynSec
 
             result.DumpToConsole();
 
-            return result ;
+            return result;
         }
 
-        
+
         public async Task<ResponseList> ExecuteAsync(TimeSpan timeout, CommandsList commands)
         {
             using (var timeoutToken = new CancellationTokenSource(timeout))
@@ -124,7 +123,7 @@ namespace mqtt_dynsec_manager.DynSec
             }
 
             var payloadBuffer = eventArgs.ApplicationMessage.PayloadSegment.ToArray();
-            var payloadStr= Encoding.UTF8.GetString(payloadBuffer);
+            var payloadStr = Encoding.UTF8.GetString(payloadBuffer);
 
             var jsonoptions = new JsonSerializerOptions
             {
@@ -135,7 +134,7 @@ namespace mqtt_dynsec_manager.DynSec
 
             var data = JsonSerializer.Deserialize<ResponseList>(payloadStr, jsonoptions) ?? new();
 
-            
+
 
             awaitable.TrySetResult(data);
 
