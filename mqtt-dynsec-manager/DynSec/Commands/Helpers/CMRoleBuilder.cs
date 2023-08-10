@@ -12,7 +12,7 @@ namespace mqtt_dynsec_manager.DynSec.Commands.Helpers
 
         public CMRoleBuilder WithTextName(string _textName) { TextName = _textName; return this; }
         public CMRoleBuilder WithTextDescription(string _textDescription) { TextDescription = _textDescription; return this; }
-        public CMRoleBuilder AddACLRule(string topic, string aclType, int priority, bool allow)
+        public CMRoleBuilder AddACLRule(string topic, ACLType aclType, int priority, bool allow)
         {
             ACLs ??= new();
             ACLs.Add(new ACLDefinition

@@ -1,8 +1,10 @@
-﻿using mqtt_dynsec_manager.DynSec.Responses.Abstract;
+﻿using mqtt_dynsec_manager.DynSec.Responses;
+using mqtt_dynsec_manager.DynSec.Responses.Abstract;
+using mqtt_dynsec_manager.DynSec.Responses.Helpers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
+namespace mqtt_dynsec_manager.DynSec.Converters
 {
     public class ResponseConverter : JsonConverter<AbstractResponse>
     {
@@ -41,13 +43,13 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 
             AbstractResponse response = command switch
             {
-                "listClients" => JsonSerializer.Deserialize<Responses.ClientList>(ref reader, options)!,
-                "listGroups" => JsonSerializer.Deserialize<Responses.GroupList>(ref reader, options)!,
-                "listRoles" => JsonSerializer.Deserialize<Responses.RoleList>(ref reader, options)!,
-                "getDefaultACLAccess" => JsonSerializer.Deserialize<Responses.DefaultACLAccess>(ref reader, options)!,
-                "getClient" => JsonSerializer.Deserialize<Responses.ClientInfo>(ref reader, options)!,
-                "getGroup" => JsonSerializer.Deserialize<Responses.GroupInfo>(ref reader, options)!,
-                "getAnonymousGroup" => JsonSerializer.Deserialize<Responses.AnonymousGroupInfo>(ref reader, options)!,
+                "listClients" => JsonSerializer.Deserialize<ClientList>(ref reader, options)!,
+                "listGroups" => JsonSerializer.Deserialize<GroupList>(ref reader, options)!,
+                "listRoles" => JsonSerializer.Deserialize<RoleList>(ref reader, options)!,
+                "getDefaultACLAccess" => JsonSerializer.Deserialize<DefaultACLAccess>(ref reader, options)!,
+                "getClient" => JsonSerializer.Deserialize<ClientInfo>(ref reader, options)!,
+                "getGroup" => JsonSerializer.Deserialize<GroupInfo>(ref reader, options)!,
+                "getAnonymousGroup" => JsonSerializer.Deserialize<AnonymousGroupInfo>(ref reader, options)!,
                 _ => JsonSerializer.Deserialize<GeneralResponse>(ref reader, options)!,
             };
 
@@ -69,26 +71,26 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 
             switch (response)
             {
-                case Responses.ClientList l:
-                    JsonSerializer.Serialize<Responses.ClientList>(writer, l, options2);
+                case ClientList l:
+                    JsonSerializer.Serialize(writer, l, options2);
                     break;
-                case Responses.GroupList l:
-                    JsonSerializer.Serialize<Responses.GroupList>(writer, l, options2);
+                case GroupList l:
+                    JsonSerializer.Serialize(writer, l, options2);
                     break;
-                case Responses.RoleList l:
-                    JsonSerializer.Serialize<Responses.RoleList>(writer, l, options2);
+                case RoleList l:
+                    JsonSerializer.Serialize(writer, l, options2);
                     break;
-                case Responses.DefaultACLAccess d:
-                    JsonSerializer.Serialize<Responses.DefaultACLAccess>(writer, d, options2);
+                case DefaultACLAccess d:
+                    JsonSerializer.Serialize(writer, d, options2);
                     break;
-                case Responses.ClientInfo c:
-                    JsonSerializer.Serialize<Responses.ClientInfo>(writer, c, options2);
+                case ClientInfo c:
+                    JsonSerializer.Serialize(writer, c, options2);
                     break;
-                case Responses.GroupInfo g:
-                    JsonSerializer.Serialize<Responses.GroupInfo>(writer, g, options2);
+                case GroupInfo g:
+                    JsonSerializer.Serialize(writer, g, options2);
                     break;
-                case Responses.Helpers.GeneralResponse g:
-                    JsonSerializer.Serialize<Responses.Helpers.GeneralResponse>(writer, g, options2);
+                case GeneralResponse g:
+                    JsonSerializer.Serialize(writer, g, options2);
                     break;
                 default:
                     writer.WriteStartObject();

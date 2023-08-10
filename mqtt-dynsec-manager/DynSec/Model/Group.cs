@@ -1,4 +1,4 @@
-﻿using mqtt_dynsec_manager.DynSec.Responses.Helpers;
+﻿using mqtt_dynsec_manager.DynSec.Converters;
 using System.Text.Json.Serialization;
 
 namespace mqtt_dynsec_manager.DynSec.Model

@@ -2,14 +2,14 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
+namespace mqtt_dynsec_manager.DynSec.Converters
 {
-    public class ClientConverter : JsonConverter<Client>
+    public class GroupConverter : JsonConverter<Group>
     {
-        public override Client? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override Group? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
 
-            Client client = new();
+            Group group = new();
 
             if (reader.TokenType != JsonTokenType.String &&
                 reader.TokenType != JsonTokenType.StartObject)
@@ -19,15 +19,15 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 
             if (reader.TokenType == JsonTokenType.String)
             {
-                client.UserName = reader.GetString();
-                return client;
+                group.GroupName = reader.GetString();
+                return group;
             }
 
             while (reader.TokenType != JsonTokenType.EndObject)
             {
                 if (!reader.Read() ||
-                    (reader.TokenType != JsonTokenType.PropertyName &&
-                     reader.TokenType != JsonTokenType.EndObject))
+                    reader.TokenType != JsonTokenType.PropertyName &&
+                     reader.TokenType != JsonTokenType.EndObject)
                 {
                     throw new JsonException();
                 }
@@ -38,40 +38,40 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 
                 switch (propertyName)
                 {
-                    case "username":
+                    case "groupname":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.String)
                         {
                             throw new JsonException();
                         }
-                        client.UserName = reader.GetString();
+                        group.GroupName = reader.GetString();
                         break;
                     case "textname":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.String)
                         {
                             throw new JsonException();
                         }
-                        client.TextName = reader.GetString();
+                        group.TextName = reader.GetString();
                         break;
                     case "textdescription":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.String)
                         {
                             throw new JsonException();
                         }
-                        client.TextDescription = reader.GetString();
+                        group.TextDescription = reader.GetString();
                         break;
                     case "roles":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.StartArray)
                         {
                             throw new JsonException();
                         }
-                        client.Roles = JsonSerializer.Deserialize<RoleNameClass[]>(ref reader, options);
+                        group.Roles = JsonSerializer.Deserialize<RoleNameClass[]>(ref reader, options);
                         break;
-                    case "groups":
+                    case "clients":
                         if (!reader.Read() || reader.TokenType != JsonTokenType.StartArray)
                         {
                             throw new JsonException();
                         }
-                        client.Groups = JsonSerializer.Deserialize<GroupNameClass[]>(ref reader, options);
+                        group.Clients = JsonSerializer.Deserialize<ClientNameClass[]>(ref reader, options);
                         break;
                     default:
                         throw new JsonException($"Invalid property: {propertyName}");
@@ -81,27 +81,27 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
             }
 
 
-            return client;
+            return group;
         }
 
-        public override void Write(Utf8JsonWriter writer, Client value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, Group value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
 
-            WriteStringProperty(ref writer, "userName", value.UserName, options);
+            WriteStringProperty(ref writer, "groupName", value.GroupName, options);
             WriteStringProperty(ref writer, "textName", value.TextName, options);
             WriteStringProperty(ref writer, "textDescription", value.TextDescription, options);
 
-            if ((value.Roles is not null) || (options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull))
+            if (value.Roles is not null || options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull)
             {
                 writer.WritePropertyName("roles");
                 JsonSerializer.Serialize(writer, value.Roles, options);
             }
 
-            if ((value.Groups is not null) || (options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull))
+            if (value.Clients is not null || options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull)
             {
                 writer.WritePropertyName("groups");
-                JsonSerializer.Serialize(writer, value.Groups, options);
+                JsonSerializer.Serialize(writer, value.Clients, options);
             }
 
             writer.WriteEndObject();

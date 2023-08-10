@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
+namespace mqtt_dynsec_manager.DynSec.Converters
 {
     public class RoleACLConverter : JsonConverter<RoleACL>
     {
@@ -24,8 +24,8 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
             while (reader.TokenType != JsonTokenType.EndObject)
             {
                 if (!reader.Read() ||
-                    (reader.TokenType != JsonTokenType.PropertyName &&
-                     reader.TokenType != JsonTokenType.EndObject))
+                    reader.TokenType != JsonTokenType.PropertyName &&
+                     reader.TokenType != JsonTokenType.EndObject)
                 {
                     throw new JsonException();
                 }
@@ -85,7 +85,7 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
 
 
 
-            if ((value.ACLs is not null) || (options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull))
+            if (value.ACLs is not null || options.DefaultIgnoreCondition != JsonIgnoreCondition.WhenWritingNull)
             {
                 writer.WritePropertyName("acls");
                 JsonSerializer.Serialize(writer, value.ACLs, options);
