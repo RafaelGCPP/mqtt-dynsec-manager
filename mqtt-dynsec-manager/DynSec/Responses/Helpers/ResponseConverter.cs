@@ -47,6 +47,7 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Helpers
                 "getDefaultACLAccess" => JsonSerializer.Deserialize<Responses.DefaultACLAccess>(ref reader, options)!,
                 "getClient" => JsonSerializer.Deserialize<Responses.ClientInfo>(ref reader, options)!,
                 "getGroup" => JsonSerializer.Deserialize<Responses.GroupInfo>(ref reader, options)!,
+                "getAnonymousGroup" => JsonSerializer.Deserialize<Responses.AnonymousGroupInfo>(ref reader, options)!,
                 _ => JsonSerializer.Deserialize<GeneralResponse>(ref reader, options)!,
             };
 

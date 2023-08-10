@@ -7,9 +7,9 @@ namespace mqtt_dynsec_manager.DynSec.Commands.Abstract
     [JsonDerivedType(typeof(SetDefaultACLAccess))]
     [JsonDerivedType(typeof(GetDefaultACLAccess))]
     [JsonDerivedType(typeof(CreateClient))]
-    //DeleteClient
-    //EnableClient
-    //DisableClient
+    [JsonDerivedType(typeof(DeleteClient))]
+    [JsonDerivedType(typeof(EnableClient))]
+    [JsonDerivedType(typeof(DisableClient))]
     [JsonDerivedType(typeof(GetClient))]
     [JsonDerivedType(typeof(ListClients))]
     [JsonDerivedType(typeof(ModifyClient))]
@@ -18,21 +18,21 @@ namespace mqtt_dynsec_manager.DynSec.Commands.Abstract
     //AddClientRole
     //RemoveClientRole
     //AddGroupClient
-    //CreateGroup
-    //DeleteGroup
+    [JsonDerivedType(typeof(CreateGroup))]
+    [JsonDerivedType(typeof(DeleteGroup))]
     [JsonDerivedType(typeof(GetGroup))]
     [JsonDerivedType(typeof(ListGroups))]
-    //ModifyGroup
+    [JsonDerivedType(typeof(ModifyGroup))]
     //RemoveGroupClient
     //AddGroupRole
     //RemoveGroupRole
     //SetAnonymousGroup
-    //GetAnonymousGroup
-    //CreateRole
-    //GetRole
+    [JsonDerivedType(typeof(GetAnonymousGroup))]
+    [JsonDerivedType(typeof(CreateRole))]
+    [JsonDerivedType(typeof(GetRole))]
     [JsonDerivedType(typeof(ListRoles))]
-    //ModifyRole
-    //DeleteRole
+    [JsonDerivedType(typeof(ModifyRole))]
+    [JsonDerivedType(typeof(DeleteRole))]
     //AddRoleACL
     //RemoveRoleACL  
     public abstract class AbstractCommand

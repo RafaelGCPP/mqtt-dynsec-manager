@@ -50,5 +50,17 @@ namespace mqtt_dynsec_manager.Controllers
             return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
 
         }
+
+        // GET: api/<MQTTdynsecController>/groups
+        [HttpGet("anonymous-group")]
+        public async Task<ResponseList> GetAnonymousGroups()
+        {
+            var cmds = new CommandsList(new List<AbstractCommand> {
+                new GetAnonymousGroup(),
+            });
+
+            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+
+        }
     }
 }
