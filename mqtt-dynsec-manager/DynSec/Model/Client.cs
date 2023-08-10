@@ -14,16 +14,4 @@ namespace mqtt_dynsec_manager.DynSec.Model
         public GroupNameClass[]? Groups { get; set; }
     }
 
-    public class ClientPriority
-    {
-        public string? UserName { get; set; }
-        public int Priority { get; set; } = 1;
-
-    }
-
-    public class ClientNameClass
-    {
-        public string? UserName { get; set; }
-    }
-
 }

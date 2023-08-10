@@ -1,11 +1,11 @@
 ﻿using mqtt_dynsec_manager.DynSec.Commands.Abstract;
 
-namespace mqtt_dynsec_manager.DynSec
+namespace mqtt_dynsec_manager.DynSec.Commands
 {
     public class AddClientRole : AbstractCommand
     {
-		public AddClientRole(string username, string rolename, int priority = -1) : base("addClientRole")
-		{
+        public AddClientRole(string username, string rolename, int priority = -1) : base("addClientRole")
+        {
             UserName = username;
             RoleName = rolename;
             Priority = priority;
