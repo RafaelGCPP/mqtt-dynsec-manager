@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mqtt_dynsec_manager.Data;
 using mqtt_dynsec_manager.DynSec;
@@ -69,6 +70,11 @@ builder.Services.AddIdentityServer()
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt()
     ;
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

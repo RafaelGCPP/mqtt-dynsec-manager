@@ -5,10 +5,10 @@ namespace mqtt_dynsec_manager.DynSec.Responses
 {
     public class DefaultACLAccess : AbstractResponse
     {
-        public class ResponseData : AbstractResponseData
+        public class DefaultACLAccessData 
         {
             public DefaultACL[]? ACLs { get; set; }
         }
-        public ResponseData? Data { get; set; }
+        public DefaultACLAccessData? Data { get; set; }
     }
 }

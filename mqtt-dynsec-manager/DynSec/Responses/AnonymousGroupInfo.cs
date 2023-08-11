@@ -5,10 +5,10 @@ namespace mqtt_dynsec_manager.DynSec.Responses
 {
     public class AnonymousGroupInfo : AbstractResponse
     {
-        public class ResponseData : AbstractResponseData
+        public class AnonymousGroupInfoData 
         {
             public GroupNameClass? group { get; set; }
         }
-        public ResponseData? data { get; set; }
+        public AnonymousGroupInfoData? data { get; set; }
     }
 }

@@ -5,12 +5,12 @@ namespace mqtt_dynsec_manager.DynSec.Responses
 {
     public class ClientInfo : AbstractResponse
     {
-        public class ResponseData : AbstractResponseData
+        public class ClientInfoData 
         {
             public Client? Client { get; set; }
         }
 
 
-        public ResponseData? Data { get; set; }
+        public ClientInfoData? Data { get; set; }
     }
 }

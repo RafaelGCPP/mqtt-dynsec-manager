@@ -2,6 +2,7 @@
 using mqtt_dynsec_manager.DynSec.Commands.Abstract;
 using mqtt_dynsec_manager.DynSec.Commands.Helpers;
 using mqtt_dynsec_manager.DynSec.Interfaces;
+using mqtt_dynsec_manager.DynSec.Responses.Abstract;
 using mqtt_dynsec_manager.DynSec.Responses.Helpers;
 using mqtt_dynsec_manager.Helpers;
 using MQTTnet;
@@ -35,24 +36,26 @@ namespace mqtt_dynsec_manager.DynSec
         }
         readonly ConcurrentDictionary<string, AsyncTaskCompletionSource<ResponseList>> _waitingCalls = new();
 
-        public ResponseList Teste()
+        public async Task<AbstractResponse> ExecuteCommand(AbstractCommand cmd)
         {
+            TimeSpan _timeout = TimeSpan.FromSeconds(10);
 
-            var cmds = new CommandsList(new List<AbstractCommand>        {
-                new ListClients(true),
-                new Commands.GetClient("rafael"),
+            var cmds = new CommandsList(new List<AbstractCommand>
+            {
+                cmd
             });
 
-            var result = Task.Run(() => ExecuteAsync(TimeSpan.FromSeconds(10), cmds)).Result;
+            var responseList = await ExecuteAsync(_timeout, cmds);
 
 
+            var response = responseList.Responses?.First() ?? new GeneralResponse
+            {
+                Command = cmd.Command,
+                Error = "No response received"
+            };
 
-            result.DumpToConsole();
-
-            return result;
+            return response;
         }
-
-
         public async Task<ResponseList> ExecuteAsync(TimeSpan timeout, CommandsList commands)
         {
             using (var timeoutToken = new CancellationTokenSource(timeout))
