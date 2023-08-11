@@ -5,17 +5,19 @@ namespace mqtt_dynsec_manager.DynSec.Responses
 {
     public sealed class ClientList : AbstractResponse
     {
-        public class ClientListData 
-        {
-            public int? TotalCount { get; set; }
-            public Client[]? Clients { get; set; }
 
-        };
 
 
         public ClientListData? Data { get; set; }
 
     }
+
+    public sealed class ClientListData : AbstractResponseData
+    {
+        public int? TotalCount { get; set; }
+        public Client[]? Clients { get; set; }
+
+    };
 
 
 }

@@ -3,12 +3,13 @@ using mqtt_dynsec_manager.DynSec.Responses.Abstract;
 
 namespace mqtt_dynsec_manager.DynSec.Responses
 {
-    public class DefaultACLAccess : AbstractResponse
+    public sealed class DefaultACLAccess : AbstractResponse
     {
-        public class DefaultACLAccessData 
-        {
-            public DefaultACL[]? ACLs { get; set; }
-        }
+
         public DefaultACLAccessData? Data { get; set; }
+    }
+    public sealed class DefaultACLAccessData : AbstractResponseData
+    {
+        public DefaultACL[]? ACLs { get; set; }
     }
 }

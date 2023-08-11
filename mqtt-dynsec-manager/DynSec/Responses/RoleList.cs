@@ -3,14 +3,16 @@ using mqtt_dynsec_manager.DynSec.Responses.Abstract;
 
 namespace mqtt_dynsec_manager.DynSec.Responses
 {
-    public class RoleList : AbstractResponse
+    public sealed class RoleList : AbstractResponse
     {
-        public class RoleListData 
-        {
-            public int? TotalCount { get; set; }
-            public RoleACL[]? Roles { get; set; }
 
-        };
         public RoleListData? Data { get; set; }
     }
+
+    public sealed class RoleListData
+    {
+        public int? TotalCount { get; set; }
+        public RoleACL[]? Roles { get; set; }
+
+    };
 }

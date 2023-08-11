@@ -8,7 +8,8 @@ namespace mqtt_dynsec_manager.DynSec.Responses.Abstract
 
     {
         public string? Command { get; set; }
-        public string Error { get; set; } = "Ok";
+        public string? Error { get; set; }
+        public AbstractResponseData? AbstractData { get; set; }
 
     }
 }

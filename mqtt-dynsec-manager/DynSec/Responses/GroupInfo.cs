@@ -3,19 +3,15 @@ using mqtt_dynsec_manager.DynSec.Responses.Abstract;
 
 namespace mqtt_dynsec_manager.DynSec.Responses
 {
-    public class GroupInfo : AbstractResponse
+    public sealed class GroupInfo : AbstractResponse
     {
-        public class GroupInfoData
-        {
-            public Group? Group { get; set; }
-        }
-        public class Group
-        {
-            public string? GroupName { get; set; }
-            public RoleNameClass[]? Roles { get; set; }
-            public ClientNameClass[]? Clients { get; set; }
-        }
+
 
         public GroupInfoData? Data { get; set; }
+    }
+
+    public sealed class GroupInfoData : AbstractResponseData
+    {
+        public Group? Group { get; set; }
     }
 }

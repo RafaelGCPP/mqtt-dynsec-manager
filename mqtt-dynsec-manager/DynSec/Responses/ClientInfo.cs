@@ -3,14 +3,13 @@ using mqtt_dynsec_manager.DynSec.Responses.Abstract;
 
 namespace mqtt_dynsec_manager.DynSec.Responses
 {
-    public class ClientInfo : AbstractResponse
+    public sealed class ClientInfo : AbstractResponse
     {
-        public class ClientInfoData 
-        {
-            public Client? Client { get; set; }
-        }
-
-
         public ClientInfoData? Data { get; set; }
+    }
+
+    public sealed class ClientInfoData : AbstractResponseData
+    {
+        public Client? Client { get; set; }
     }
 }
