@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mqtt_dynsec_manager.Data;
 using mqtt_dynsec_manager.DynSec;

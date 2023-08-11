@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using mqtt_dynsec_manager.DynSec.Commands;
-using mqtt_dynsec_manager.DynSec.Commands.Abstract;
-using mqtt_dynsec_manager.DynSec.Commands.Helpers;
 using mqtt_dynsec_manager.DynSec.Interfaces;
 using mqtt_dynsec_manager.DynSec.Responses;
-using mqtt_dynsec_manager.DynSec.Responses.Abstract;
-using mqtt_dynsec_manager.DynSec.Responses.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -44,6 +40,6 @@ namespace mqtt_dynsec_manager.Controllers.DynamicSecurity
         }
 
 
- 
+
     }
 }

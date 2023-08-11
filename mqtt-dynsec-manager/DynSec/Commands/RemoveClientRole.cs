@@ -4,8 +4,8 @@ namespace mqtt_dynsec_manager.DynSec.Commands
 {
     public class RemoveClientRole : AbstractCommand
     {
-		public RemoveClientRole(string username, string rolename) : base("removeClientRole")
-		{
+        public RemoveClientRole(string username, string rolename) : base("removeClientRole")
+        {
             UserName = username;
             RoleName = rolename;
         }

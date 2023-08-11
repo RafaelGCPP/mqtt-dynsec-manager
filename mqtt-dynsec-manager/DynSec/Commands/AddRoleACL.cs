@@ -5,8 +5,8 @@ namespace mqtt_dynsec_manager.DynSec.Commands
 {
     public class AddRoleACL : AbstractCommand
     {
-		public AddRoleACL(string rolename, ACLType acltype, string topic, int priority = -1, bool allow = true) : base("addRoleACL")
-		{
+        public AddRoleACL(string rolename, ACLType acltype, string topic, int priority = -1, bool allow = true) : base("addRoleACL")
+        {
             RoleName = rolename;
             ACLType = acltype;
             Topic = topic;

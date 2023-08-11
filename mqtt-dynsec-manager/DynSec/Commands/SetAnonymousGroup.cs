@@ -4,8 +4,8 @@ namespace mqtt_dynsec_manager.DynSec.Commands
 {
     public class SetAnonymousGroup : AbstractCommand
     {
-		public SetAnonymousGroup(string groupname) : base("setAnonymousGroup")
-		{
+        public SetAnonymousGroup(string groupname) : base("setAnonymousGroup")
+        {
             GroupName = groupname;
         }
         public string GroupName { get; set; }

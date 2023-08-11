@@ -4,8 +4,8 @@ namespace mqtt_dynsec_manager.DynSec.Commands
 {
     public class RemoveGroupRole : AbstractCommand
     {
-		public RemoveGroupRole(string groupname, string rolename) : base("removeGroupRole")
-		{
+        public RemoveGroupRole(string groupname, string rolename) : base("removeGroupRole")
+        {
             GroupName = groupname;
             RoleName = rolename;
         }

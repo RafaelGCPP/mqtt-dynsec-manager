@@ -17,16 +17,16 @@ namespace mqtt_dynsec_manager.DynSec.Commands
     public class CreateGroupBuilder : CMGroupBuilder
     {
         private readonly CreateGroup createGroup;
-        public CreateGroupBuilder(string _groupname) : base(_groupname) 
+        public CreateGroupBuilder(string _groupname) : base(_groupname)
         {
             createGroup = new CreateGroup(_groupname);
         }
-        
+
         public override CreateGroup Build()
         {
             createGroup.Roles = Roles;
             createGroup.GroupName = groupname;
-           
+
             return createGroup;
         }
     }

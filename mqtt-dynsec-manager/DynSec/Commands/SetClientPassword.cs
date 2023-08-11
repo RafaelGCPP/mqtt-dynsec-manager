@@ -4,7 +4,7 @@ namespace mqtt_dynsec_manager.DynSec.Commands
 {
     public class SetClientPassword : AbstractCommand
     {
-        public SetClientPassword(string username, string password) : base("setClientPassword") 
+        public SetClientPassword(string username, string password) : base("setClientPassword")
         {
             UserName = username;
             Password = password;

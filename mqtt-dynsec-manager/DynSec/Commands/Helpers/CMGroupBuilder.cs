@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Primitives;
-using mqtt_dynsec_manager.DynSec.Commands.Abstract;
+﻿using mqtt_dynsec_manager.DynSec.Commands.Abstract;
 using mqtt_dynsec_manager.DynSec.Model;
 
 namespace mqtt_dynsec_manager.DynSec.Commands.Helpers

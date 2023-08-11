@@ -5,8 +5,8 @@ namespace mqtt_dynsec_manager.DynSec.Commands
 {
     public class RemoveRoleACL : AbstractCommand
     {
-		public RemoveRoleACL(string rolename, ACLType acltype, string topic) : base("removeRoleACL")
-		{
+        public RemoveRoleACL(string rolename, ACLType acltype, string topic) : base("removeRoleACL")
+        {
             RoleName = rolename;
             ACLType = acltype;
             Topic = topic;

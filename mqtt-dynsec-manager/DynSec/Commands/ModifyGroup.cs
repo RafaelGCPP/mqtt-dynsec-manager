@@ -19,15 +19,15 @@ namespace mqtt_dynsec_manager.DynSec.Commands
 
     }
 
-	public class ModifyGroupBuilder : CMGroupBuilder
+    public class ModifyGroupBuilder : CMGroupBuilder
     {
 
         private readonly ModifyGroup modifyGroup;
         public ModifyGroupBuilder(string _groupname) : base(_groupname)
-	    {
+        {
             modifyGroup = new ModifyGroup(_groupname);
         }
-        
+
 
         public override ModifyGroup Build()
         {

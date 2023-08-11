@@ -4,23 +4,23 @@ using mqtt_dynsec_manager.DynSec.Model;
 
 namespace mqtt_dynsec_manager.DynSec.Commands
 {
-    public class CreateRole:AbstractCommand
+    public class CreateRole : AbstractCommand
     {
-		public CreateRole(string _roleName):base("createRole")
-		{
+        public CreateRole(string _roleName) : base("createRole")
+        {
             RoleName = _roleName;
         }
-		public string? RoleName { get; set; }
+        public string? RoleName { get; set; }
         public string? TextName { get; set; }
         public string? TextDescription { get; set; }
         public List<ACLDefinition>? ACLs { get; set; }
     }
 
-	public class CreateRoleBuilder : CMRoleBuilder
-	{
+    public class CreateRoleBuilder : CMRoleBuilder
+    {
         private readonly CreateRole createRole;
         public CreateRoleBuilder(string _roleName)
-		{
+        {
             createRole = new CreateRole(_roleName);
         }
         public override CreateRole Build()
