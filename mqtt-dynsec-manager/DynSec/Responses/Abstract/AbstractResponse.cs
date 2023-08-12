@@ -4,12 +4,11 @@ using System.Text.Json.Serialization;
 namespace mqtt_dynsec_manager.DynSec.Responses.Abstract
 {
     [JsonConverter(typeof(ResponseConverter))]
-    public class AbstractResponse
+    public abstract class AbstractResponse
 
     {
         public string? Command { get; set; }
-        public string? Error { get; set; }
-        public AbstractResponseData? AbstractData { get; set; }
+        public string? Error { get; set; } = "Ok";
 
     }
 }

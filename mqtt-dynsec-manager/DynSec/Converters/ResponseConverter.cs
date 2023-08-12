@@ -50,6 +50,7 @@ namespace mqtt_dynsec_manager.DynSec.Converters
                 "getClient" => JsonSerializer.Deserialize<ClientInfo>(ref reader, options)!,
                 "getGroup" => JsonSerializer.Deserialize<GroupInfo>(ref reader, options)!,
                 "getAnonymousGroup" => JsonSerializer.Deserialize<AnonymousGroupInfo>(ref reader, options)!,
+                "getRole" => JsonSerializer.Deserialize<RoleInfo>(ref reader, options)!,
                 _ => JsonSerializer.Deserialize<GeneralResponse>(ref reader, options)!,
             };
 

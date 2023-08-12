@@ -3,6 +3,8 @@ using mqtt_dynsec_manager.DynSec.Commands;
 using mqtt_dynsec_manager.DynSec.Commands.Abstract;
 using mqtt_dynsec_manager.DynSec.Commands.Helpers;
 using mqtt_dynsec_manager.DynSec.Interfaces;
+using mqtt_dynsec_manager.DynSec.Responses;
+using mqtt_dynsec_manager.DynSec.Responses.Abstract;
 using mqtt_dynsec_manager.DynSec.Responses.Helpers;
 
 namespace mqtt_dynsec_manager.Controllers.DynamicSecurity
@@ -17,26 +19,50 @@ namespace mqtt_dynsec_manager.Controllers.DynamicSecurity
 
         // GET: api/<MQTTdynsecController>/roles
         [HttpGet("roles")]
-        public async Task<ResponseList> GetRoles(bool? verbose)
+        public async Task<ActionResult<RoleListData>> GetRoles(bool? verbose)
         {
-            var cmds = new CommandsList(new List<AbstractCommand>
+            var cmd = new ListRoles(verbose ?? true);
+            AbstractResponse result = await dynSec.ExecuteCommand(cmd) ?? new GeneralResponse
             {
-                new ListRoles(verbose ?? true),
-            });
+                Error = "Task cancelled",
+                Command = cmd.Command,
+                Data = null
+            };
 
-            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+            switch (result.Error)
+            {
+                case "Ok":
+                    var data = ((RoleList)result).Data;
+                    return Ok(data);
+                case "Task cancelled":
+                    return StatusCode(504);
+                default:
+                    return NotFound(result);
+            }
         }
 
         // GET: api/<MQTTdynsecController>/role/<role>
         [HttpGet("role/{role}")]
-        public async Task<ResponseList> GetRole(string role)
+        public async Task<ActionResult<RoleInfoData>> GetRole(string role)
         {
-            var cmds = new CommandsList(new List<AbstractCommand>
+            var cmd = new GetRole(role);
+            AbstractResponse result = await dynSec.ExecuteCommand(cmd) ?? new GeneralResponse
             {
-                new GetRole(role),
-            });
+                Error = "Task cancelled",
+                Command = cmd.Command,
+                Data = null
+            };
 
-            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+            switch (result.Error)
+            {
+                case "Ok":
+                    var data = ((RoleInfo)result).Data;
+                    return Ok(data);
+                case "Task cancelled":
+                    return StatusCode(504);
+                default:
+                    return NotFound(result);
+            }            
         }
     }
 }

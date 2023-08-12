@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using mqtt_dynsec_manager.DynSec.Commands;
 using mqtt_dynsec_manager.DynSec.Commands.Abstract;
-using mqtt_dynsec_manager.DynSec.Commands.Helpers;
 using mqtt_dynsec_manager.DynSec.Interfaces;
+using mqtt_dynsec_manager.DynSec.Responses;
+using mqtt_dynsec_manager.DynSec.Responses.Abstract;
 using mqtt_dynsec_manager.DynSec.Responses.Helpers;
 
 namespace mqtt_dynsec_manager.Controllers.DynamicSecurity
@@ -17,50 +18,98 @@ namespace mqtt_dynsec_manager.Controllers.DynamicSecurity
 
         // GET: api/<MQTTdynsecController>/groups
         [HttpGet("groups")]
-        public async Task<ResponseList> GetGroups(bool? verbose)
+        public async Task<ActionResult<GroupListData>> GetGroups(bool? verbose)
         {
-            var cmds = new CommandsList(new List<AbstractCommand> {
-                new ListGroups(verbose ?? true),
-            });
+            var cmd = new ListGroups(verbose ?? true);
+            AbstractResponse result = await dynSec.ExecuteCommand(cmd) ?? new GeneralResponse
+            {
+                Error = "Task cancelled",
+                Command = cmd.Command,
+                Data = null
+            };
 
-            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
-
+            switch (result.Error)
+            {
+                case "Ok":
+                    var data = ((GroupList)result).Data;
+                    return Ok(data);
+                case "Task cancelled":
+                    return StatusCode(504);
+                default:
+                    return NotFound(result);
+            }
         }
 
         // GET: api/<MQTTdynsecController>/group/<group>
         [HttpGet("group/{group}")]
-        public async Task<ResponseList> GetGroup(string group)
+        public async Task<ActionResult<GroupInfoData>> GetGroup(string group)
         {
-            var cmds = new CommandsList(new List<AbstractCommand>
+            var cmd = new GetGroup(group);
+            var result = await dynSec.ExecuteCommand(cmd) ?? new GeneralResponse
             {
-                new GetGroup(group),
-            });
+                Error = "Task cancelled",
+                Command = cmd.Command,
+                Data = null
+            };
 
-            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+            switch (result.Error)
+            {
+                case "Ok":
+                    var data = ((GroupInfo)result).Data;
+                    return Ok(data);
+                case "Task cancelled":
+                    return StatusCode(504);
+                default:
+                    return NotFound(result);
+            }
+
         }
 
         // GET: api/<MQTTdynsecController>/anonymous-group
         [HttpGet("anonymous-group")]
-        public async Task<ResponseList> GetAnonymousGroups()
+        public async Task<ActionResult<AnonymousGroupInfoData>> GetAnonymousGroups()
         {
-            var cmds = new CommandsList(new List<AbstractCommand> {
-                new GetAnonymousGroup(),
-            });
+            var cmd = new GetAnonymousGroup();
+            var result = await dynSec.ExecuteCommand(cmd) ?? new GeneralResponse
+            {
+                Error = "Task cancelled",
+                Command = cmd.Command,
+                Data = null
+            };
 
-            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+            switch (result.Error)
+            {
+                case "Ok":
+                    var data = ((AnonymousGroupInfo)result).Data;
+                    return Ok(data);
+                case "Task cancelled":
+                    return StatusCode(504);
+                default:
+                    return NotFound(result);
+            }
         }
 
         // POST: api/<MQTTdynsecController>/anonymous-group
         [HttpPost("anonymous-group")]
-        public async Task<ResponseList> SetAnonymousGroups([FromBody] string group)
+        public async Task<ActionResult<GeneralResponse>> SetAnonymousGroups([FromBody] string group)
         {
-            var cmds = new CommandsList(new List<AbstractCommand>
+            var cmd = new SetAnonymousGroup(group);
+
+            var result = await dynSec.ExecuteCommand(cmd) ?? new GeneralResponse
             {
-                new SetAnonymousGroup(group),
-            });
-
-
-            return await dynSec.ExecuteAsync(TimeSpan.FromSeconds(10), cmds);
+                Error = "Task cancelled",
+                Command = cmd.Command,
+                Data = null
+            };
+            switch (result.Error)
+            {
+                case "Ok":
+                    return Ok();
+                case "Task cancelled":
+                    return StatusCode(504);
+                default:
+                    return NotFound(result);
+            }
         }
     }
 }

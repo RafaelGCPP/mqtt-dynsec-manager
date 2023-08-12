@@ -10,7 +10,7 @@
         {
             get
             {
-                return $"User Id = {UserName}; Password={Password} ;Data Source = {DataSource}";
+                return $"User Id={UserName}; Password={Password}; Data Source={DataSource}";
             }
         }
     }
