@@ -1,1 +1,20 @@
-<p>clients works!</p>
+<div *ngFor="let client of clients">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{client.userName}}
+            </mat-panel-title>
+            <mat-panel-description>
+                {{client.textName}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field class="example-full-width">
+            <mat-label>Description</mat-label>
+            <input matInput [(ngModel)]="client.textDescription">
+        </mat-form-field>
+
+    </mat-expansion-panel>   
+
+
+</div>
+

@@ -9,6 +9,8 @@
 		<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 		<RootNamespace>mqtt_dynsec_manager</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>2988317b-184b-45d8-bc5e-74f3bb3f8a06</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -24,6 +26,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
 		<PackageReference Include="MQTTnet" Version="4.2.1.781" />
 		<PackageReference Include="MQTTnet.AspNetCore" Version="4.2.1.781" />
 		<PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.11" />
@@ -33,6 +36,9 @@
 
 	<ItemGroup>
 		<None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+		<None Update="Certificates\mqtt-dynsec-mgr-auth.pfx">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
@@ -52,6 +58,9 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Certificates\" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

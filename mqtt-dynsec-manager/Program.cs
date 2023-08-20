@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using mqtt_dynsec_manager.Data;
 using mqtt_dynsec_manager.DynSec;
 using mqtt_dynsec_manager.DynSec.Interfaces;
 using mqtt_dynsec_manager.Environment;
+using mqtt_dynsec_manager.Helpers;
 using mqtt_dynsec_manager.Models;
 using MQTTnet;
 using MQTTnet.Client;
-
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,45 +19,29 @@ var builder = WebApplication.CreateBuilder(args);
 
 OracleDBConfig oraDbConfig = new();
 MQTTConfig mqttConfig = new();
+CertificateConfig certificateConfig = new();
 builder.Configuration.Bind("ORADB", oraDbConfig);
 builder.Configuration.Bind("MQTT", mqttConfig);
+builder.Configuration.Bind("Certificate", certificateConfig);
+
+builder.Services.AddSingleton(oraDbConfig);
+builder.Services.AddSingleton(certificateConfig);
+builder.Services.AddSingleton(mqttConfig);
+
+var keyConfig = builder.Configuration.GetSection("IdentityServer:Key");
+
+keyConfig.GetSection("Type").Value = "File";
+keyConfig.GetSection("FilePath").Value = certificateConfig.Path;
+keyConfig.GetSection("Password").Value = certificateConfig.Password;
 
 // Preparing MQTT options
-MqttClientOptionsBuilder mqttClientOptionsBuilder = new();
-if (mqttConfig.WebSockets)
-{
-    mqttClientOptionsBuilder = mqttClientOptionsBuilder.WithWebSocketServer(mqttConfig.Host)
-        .WithCredentials(mqttConfig.UserName, mqttConfig.Password);
-}
-else
-{
-    mqttClientOptionsBuilder = mqttClientOptionsBuilder.WithTcpServer(mqttConfig.Host)
-        .WithCredentials(mqttConfig.UserName, mqttConfig.Password); ;
-}
+builder.Services.AddMqttOptions(mqttConfig);
 
-if (mqttConfig.Tls) mqttClientOptionsBuilder = mqttClientOptionsBuilder.WithTls();
-var mqttClientOptions = mqttClientOptionsBuilder
-    .WithClientId("mqtt-dynsec-manager")
-    .WithCleanSession(true)
-    .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
-    .Build();
-
-builder.Services.AddSingleton(mqttClientOptions);
-
-builder.Services.AddScoped<IMqttClient>(sp =>
-{
-    MqttClientOptions options = sp.GetRequiredService<MqttClientOptions>();
-    MqttFactory mqttFactory = new();
-    var client = mqttFactory.CreateMqttClient();
-    client.ConnectAsync(options).Wait();
-    return client;
-});
-
+builder.Services.AddMqttClient();
 builder.Services.AddScoped<IDynSec, DynSec>();
 
 // Add services to the container.
 
-builder.Services.AddSingleton(oraDbConfig);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseOracle(oraDbConfig.ConnectionString));
@@ -63,11 +51,35 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddIdentityServer()
-    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+X509Certificate2 certificate = new(certificateConfig.Path, certificateConfig.Password);
+
+builder.Services.AddIdentityServer(options =>
+{
+    // set path where to store keys
+    options.KeyManagement.KeyPath = "/opt/keys";
+
+    // new key every 30 days
+    options.KeyManagement.RotationInterval = TimeSpan.FromDays(30);
+
+    // announce new key 2 days in advance in discovery
+    options.KeyManagement.PropagationTime = TimeSpan.FromDays(2);
+
+    // keep old key for 7 days in discovery for validation of tokens
+    options.KeyManagement.RetentionDuration = TimeSpan.FromDays(7);
+})
+    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
+    //.AddSigningCredential(new X509SigningCredentials(certificate))
+    ;
+
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt()
+    .AddCookie("cookies", options =>
+    {
+        options.Cookie.Name = "appcookie";
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    })
     ;
 builder.Services.Configure<RouteOptions>(options =>
 {
@@ -100,7 +112,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    HttpOnly = HttpOnlyPolicy.Always,
+    MinimumSameSitePolicy = SameSiteMode.None,
+    Secure = CookieSecurePolicy.Always
+});
 app.UseAuthentication();
+
 app.UseIdentityServer();
 app.UseAuthorization();
 
