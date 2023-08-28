@@ -61,6 +61,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Certificates\" />
+	  <Folder Include="ClientApp\src\app\dyn-sec\model\" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

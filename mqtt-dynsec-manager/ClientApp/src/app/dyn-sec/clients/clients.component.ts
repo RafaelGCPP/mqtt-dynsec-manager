@@ -1,33 +1,8 @@
 import { Component } from '@angular/core';
+import { Client } from '../model/client';
+import { ClientsService } from '../services/clients.service';
 
-const data = `
-{
-    "totalCount": 2,
-        "clients": [
-            {
-                "userName": "admin",
-                "textName": "Dynsec admin user",
-                "textDescription": null,
-                "roles": [
-                    {
-                        "roleName": "admin"
-                    }
-                ],
-                "groups": []
-            },
-            {
-                "userName": "rafael",
-                "textName": "Rafael Pinto",
-                "textDescription": "Teste",
-                "roles": [],
-                "groups": [
-                    {
-                        "groupName": "teste"
-                    }
-                ]
-            }
-        ]
-} `
+
 
 @Component({
     selector: 'app-clients',
@@ -36,13 +11,14 @@ const data = `
 })
 export class ClientsComponent {
 
-    public clients: any[] = JSON.parse(data).clients;
+    public clients: Client[] = [];
     panelOpenState = false;
 
     
-    constructor() { }
+    constructor(private clientService : ClientsService) { }
     
     ngOnInit() {
+        this.clientService.listClients().subscribe(data => this.clients = data);
     }
     
 }

@@ -8,13 +8,9 @@
                 {{client.textName}}
             </mat-panel-description>
         </mat-expansion-panel-header>
-        <mat-form-field class="example-full-width">
-            <mat-label>Description</mat-label>
-            <input matInput [(ngModel)]="client.textDescription">
-        </mat-form-field>
+        <app-client-detail [userName]="client.userName"></app-client-detail>
 
-    </mat-expansion-panel>   
-
+    </mat-expansion-panel>
 
 </div>
 
