@@ -14,6 +14,8 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace mqtt_dynsec_manager.DynSec
 {
@@ -21,20 +23,32 @@ namespace mqtt_dynsec_manager.DynSec
     {
 
         readonly IMqttClient client;
-
+        readonly MqttClientOptions options;
+        readonly ILogger logger;
+        Timer watchDog;
         private bool disposedValue;
+        private object transmitting = new object();
         private const string commandTopic = "$CONTROL/dynamic-security/v1";
         private const string responseTopic = "$CONTROL/dynamic-security/v1/response";
-
-        public DynSec(IMqttClient mqttClient)
-        {
-            client = mqttClient;
-            client.ApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
-
-        }
         readonly ConcurrentDictionary<string, AsyncTaskCompletionSource<ResponseList>> _waitingCalls = new();
 
-        public async Task<AbstractResponse> ExecuteCommand(AbstractCommand cmd)
+        public DynSec(IMqttClient mqttClient, MqttClientOptions? mqttOptions, ILogger<DynSec> _logger)
+        {
+            client = mqttClient;
+            options = mqttOptions ?? new();
+            logger = _logger;
+            client.ApplicationMessageReceivedAsync += HandleApplicationMessageReceivedAsync;
+            watchDog = new Timer(TimeSpan.FromSeconds(20));
+            watchDog.Elapsed += WatchDog_Elapsed;            
+        }
+
+        private void WatchDog_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            logger.LogInformation("Watchdog elapsed, disconnecting");
+            client.DisconnectAsync().Wait();
+        }
+
+        public Task<AbstractResponse> ExecuteCommand(AbstractCommand cmd)
         {
             TimeSpan _timeout = TimeSpan.FromSeconds(10);
 
@@ -43,16 +57,25 @@ namespace mqtt_dynsec_manager.DynSec
                 cmd
             });
 
-            var responseList = await ExecuteAsync(_timeout, cmds);
+            ResponseList? responseList;
 
-
+            // Here we force synchronization, as we don't want to send another command
+            // before we receive the response for the previous one. Also, we want to
+            // avoid disconnection by session takeover from the next command.
+            
+            lock (transmitting)
+            {
+                var responseListTask = ExecuteAsync(_timeout, cmds);
+                responseListTask.Wait();
+                responseList = responseListTask.Result;
+            }
             var response = responseList.Responses?.First() ?? new GeneralResponse
             {
                 Command = cmd.Command,
                 Error = "No response received"
             };
 
-            return response;
+            return Task.FromResult(response);
         }
         public async Task<ResponseList> ExecuteAsync(TimeSpan timeout, CommandsList commands)
         {
@@ -96,6 +119,16 @@ namespace mqtt_dynsec_manager.DynSec
                     .WithTopicFilter(responseTopic)
                     .Build();
 
+                watchDog.Stop();
+                watchDog.Start();
+                logger.LogInformation("Watchdog reset.");
+                if (!client.IsConnected)
+                {
+                    logger.LogInformation("Client was not connected. Connecting.");
+                    await client.ConnectAsync(options, cancellationToken).ConfigureAwait(false);
+                    logger.LogInformation("Connected.");
+
+                }
 
                 await client.SubscribeAsync(subscribeOptions, cancellationToken).ConfigureAwait(false);
                 await client.PublishAsync(message, cancellationToken).ConfigureAwait(false);
@@ -107,6 +140,11 @@ namespace mqtt_dynsec_manager.DynSec
                 {
                     return await awaitable.Task.ConfigureAwait(false);
                 }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Error executing command");
+                throw;
             }
             finally
             {

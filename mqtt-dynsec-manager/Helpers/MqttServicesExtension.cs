@@ -25,6 +25,7 @@ namespace mqtt_dynsec_manager.Helpers
                 .WithClientId("mqtt-dynsec-manager")
                 .WithCleanSession(true)
                 .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
+                .WithNoKeepAlive()                
                 .Build();
 
             services.AddSingleton(mqttClientOptions);
@@ -32,12 +33,10 @@ namespace mqtt_dynsec_manager.Helpers
 
         public static void AddMqttClient(this IServiceCollection services)
         {
-            services.AddScoped<IMqttClient>(sp =>
+            services.AddSingleton<IMqttClient>(sp =>
             {
-                MqttClientOptions options = sp.GetRequiredService<MqttClientOptions>();
                 MqttFactory mqttFactory = new();
-                var client = mqttFactory.CreateMqttClient();
-                client.ConnectAsync(options).Wait();
+                var client = mqttFactory.CreateMqttClient();              
                 return client;
             });
         }

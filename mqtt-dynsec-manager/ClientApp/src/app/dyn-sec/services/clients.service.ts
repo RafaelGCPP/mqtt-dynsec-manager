@@ -11,6 +11,7 @@ export class ClientsService extends DynSecService {
 
     private clientsApi = "api/clients";
     private clientsMethod = "/clients";
+    private clientMethod = "/client";
 
 
 
@@ -23,7 +24,14 @@ export class ClientsService extends DynSecService {
             );
     }
 
-
+    public getClient (username: string): Observable<Client> {
+        return this.http.get<any>(this.clientsApi + this.clientMethod + "/" + username)
+            .pipe(
+                map((client: { client: Client }) => client.client),
+                tap(_ => this.log('getClient returned')),
+                catchError(this.handleError<Client>('getClient'))
+            );
+    }
 
 
 }

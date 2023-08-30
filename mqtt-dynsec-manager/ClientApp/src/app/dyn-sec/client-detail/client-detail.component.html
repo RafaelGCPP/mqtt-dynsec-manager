@@ -1,0 +1,13 @@
+<ul>
+    <li>{{client.userName}}</li>
+    <li>{{client.textName}}</li>
+    <li>{{client.textDescription}}</li>
+    <li>
+        <ul >
+            <li *ngFor="let role of client.roles">{{role.roleName}}</li>
+        </ul>
+        <ul>
+            <li *ngFor="let group of client.groups">{{group.groupName}}</li>
+        </ul>
+    </li>
+</ul>

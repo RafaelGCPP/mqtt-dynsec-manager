@@ -1,19 +1,18 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using mqtt_dynsec_manager.Data;
 using mqtt_dynsec_manager.DynSec;
 using mqtt_dynsec_manager.DynSec.Interfaces;
 using mqtt_dynsec_manager.Environment;
 using mqtt_dynsec_manager.Helpers;
 using mqtt_dynsec_manager.Models;
-using MQTTnet;
-using MQTTnet.Client;
 using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.AddConsole();
+
 
 // Binding configurations
 
@@ -36,9 +35,9 @@ keyConfig.GetSection("Password").Value = certificateConfig.Password;
 
 // Preparing MQTT options
 builder.Services.AddMqttOptions(mqttConfig);
-
 builder.Services.AddMqttClient();
-builder.Services.AddScoped<IDynSec, DynSec>();
+builder.Services.AddSingleton<IDynSec, DynSec>();
+
 
 // Add services to the container.
 
