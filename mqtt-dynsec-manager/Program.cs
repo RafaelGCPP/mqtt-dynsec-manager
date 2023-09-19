@@ -8,11 +8,18 @@ using mqtt_dynsec_manager.Environment;
 using mqtt_dynsec_manager.Helpers;
 using mqtt_dynsec_manager.Models;
 using System.Security.Cryptography.X509Certificates;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.AddConsole();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
 
+
+    
+builder.Host.UseSerilog();
 
 // Binding configurations
 

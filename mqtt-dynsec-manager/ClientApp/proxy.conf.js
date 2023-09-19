@@ -11,9 +11,11 @@ const PROXY_CONFIG = [
       '/_configuration',
       '/.well-known',
       '/Identity',
+      '/identity',
       '/connect',
       '/ApplyDatabaseMigrations',
-      '/_framework'
+      '/_framework',
+      '/api',
     ],
     target,
     secure: false,
@@ -21,13 +23,13 @@ const PROXY_CONFIG = [
       Connection: 'Keep-Alive'
     }
   },
-  {
-    context: [
-      '/api/**'
-    ],
-    target: 'https://localhost:7009',
-    secure: false
-  }
+  //{
+  //  context: [
+  //    '/api/**'
+  //  ],
+  //  target: 'https://localhost:7009',
+  //  secure: false
+  //}
 ]
 
 module.exports = PROXY_CONFIG

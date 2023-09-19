@@ -44,8 +44,10 @@ namespace mqtt_dynsec_manager.DynSec
 
         private void WatchDog_Elapsed(object? sender, ElapsedEventArgs e)
         {
+            if (!client.IsConnected) return;
             logger.LogInformation("Watchdog elapsed, disconnecting");
             client.DisconnectAsync().Wait();
+            watchDog.Stop();
         }
 
         public Task<AbstractResponse> ExecuteCommand(AbstractCommand cmd)
